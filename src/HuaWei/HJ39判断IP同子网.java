@@ -99,9 +99,78 @@ AND运算  11000000.10101000.00000000.00000000
 import java.util.*;
 import java.io.*;
 
-public class HJ39判断IP同子网 {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+import java.util.*;
 
+public class HJ39判断IP同子网 {
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        String maskCodeStr = s.nextLine();
+        String ipOneStr = s.nextLine();
+        String ipTwoStr = s.nextLine();
+        //转数组
+        String[] maskCodeArr = maskCodeStr.split("\\.");
+        String[] ipOneArr = ipOneStr.split("\\.");
+        String[] ipTwoArr = ipTwoStr.split("\\.");
+        // 校验ip和maskCode基本合法性
+        for (int i = 0; i < maskCodeArr.length; i++) {
+            if (!(Integer.parseInt(maskCodeArr[i]) >= 0 && Integer.parseInt(maskCodeArr[i]) <= 255)
+                    || !(Integer.parseInt(ipOneArr[i]) >= 0 && Integer.parseInt(ipOneArr[i]) <= 255)
+                    || !(Integer.parseInt(ipTwoArr[i]) >= 0 && Integer.parseInt(ipTwoArr[i]) <= 255)){
+                System.out.println(1);
+                return;
+            }
+        }
+        // 校验maskCode合法性
+        boolean isTrue = validateMaskCode(maskCodeArr);
+        if (!isTrue){
+            System.out.println(1);
+            return;
+        }
+        // 分析是否在同一子网
+//        System.out.println(maskCodeStr);
+        int count = 0;
+        for (int i = 0; i < maskCodeArr.length; i++) {
+            int ip1 = Integer.parseInt(Integer.toBinaryString(Integer.valueOf(ipOneArr[i])));
+            int ip2 = Integer.parseInt(Integer.toBinaryString(Integer.valueOf(ipTwoArr[i])));
+            int mask = Integer.parseInt(Integer.toBinaryString(Integer.valueOf(maskCodeArr[i])));
+            int a = ip1 & mask;
+            int b = ip2 & mask;
+            if (a == b){
+                count++;
+                //System.out.println(ip1+":"+ip2);
+            }
+        }
+        if (count == 4) {
+            System.out.println(0);
+        }else {
+            System.out.println(2);
+        }
+    }
+
+    private static boolean validateMaskCode(String[] maskCodeArr) {
+        //全为0和全为1都是错误的
+        int zero = 0;
+        int one = 0;
+        StringBuilder maskCode = new StringBuilder();
+        String zeros = "00000000";
+        for (String code : maskCodeArr) {
+            if ("0".equals(code)){
+                zero++;
+            }else if ("255".equals(code)){
+                one++;
+            }
+            String binaryString = Integer.toBinaryString(Integer.parseInt(code));
+            if (binaryString.length() < 8){
+                binaryString = zeros.substring(0,8-binaryString.length())+binaryString;
+            }
+            maskCode.append(binaryString);
+        }
+        if (zero == 4 || one == 4){
+            return false;
+        }
+        String[] split = maskCode.toString().split("[0]");
+        return split.length <= 1;
     }
 }
+
