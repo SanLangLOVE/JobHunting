@@ -60,6 +60,16 @@ import java.util.*;
 import java.io.*;
 
 public class HJ43走迷宫 {
+    // 简单的位置类
+    public static class Pos {
+        int x;
+        int y;
+
+        public Pos(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         // 注意 hasNext 和 hasNextLine 的区别
@@ -124,14 +134,4 @@ public class HJ43走迷宫 {
         return false;
     }
 
-    // 简单的位置类
-    public static class Pos {
-        int x;
-        int y;
-
-        public Pos(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 }
