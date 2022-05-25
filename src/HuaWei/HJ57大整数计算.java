@@ -18,7 +18,7 @@ public class HJ57大整数计算 {
             String s1 = scan.next();
             String s2 = scan.next(); //输入两个数
             BigInteger a = new BigInteger(s1); //将字符串转成大整数
-            BigInteger b = new BigInteger(s2);
+            BigInteger b = new BigInteger(s2);//在java.math中
             System.out.println(a.add(b)); //大整数相加
         }
     }
